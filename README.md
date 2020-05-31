@@ -1,9 +1,10 @@
 # Projecto de PIV
 
 Jogo Plinko
-Teste Wenderson
+Teste Filipe
 
 ## Autores:
 
 Filipe Rodrigues
+
 Wenderson Wanzeller

@@ -5,6 +5,6 @@ Teste Filipe
 
 ## Autores:
 
-Filipe Rodrigues
-
-Wenderson Wanzeller
+Filipe Rodrigues - SM
+Wenderson Wanzeller - PO
+Terceira linha

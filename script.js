@@ -9,10 +9,7 @@ const somar = (a, b) => {
 };
 
 const multiplicar = (a, b) => {
-  let operando1 = a;
-  let operando2 = b;
-  let multiplicacao = operando1 * operando2;
-  return multiplicacao;
+  return a * b;
 };
 
 console.log(somar(7, 4));

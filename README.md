@@ -5,5 +5,5 @@ Teste Wenderson
 
 ## Autores:
 
-Filipe Rodrigues
-Wenderson Wanzeller
+Filipe Rodrigues - SM
+Wenderson Wanzeller - PO

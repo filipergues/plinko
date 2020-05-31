@@ -1,0 +1,9 @@
+body {
+  background: #ffffff;
+}
+
+#canvas {
+  margin: 20px;
+  background-color: #dddddd;
+  box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.5);
+}

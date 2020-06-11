@@ -55,10 +55,10 @@ for (var i = 0; i < 7; i++) {
     var pino = new Pino(5, cor_madeira);
     // Se for uma linha par, o primeiro pino
     // da linha começa na posição x = 110
-    if (i % 2 == 0) pino.x = cx - largura / 2 + 110 + 60 * j;
+    if (i % 2 == 0) pino.x = cx - largura / 2 + 105 + 60 * j;
     // Se for uma linha impar, o primeiro pino
     // da linha começa na posição x = 80
-    else pino.x = cx - largura / 2 + 80 + 60 * j;
+    else pino.x = cx - largura / 2 + 75 + 60 * j;
     pino.y = cy - altura / 2 + 60 + 60 * i;
     // Desenha apenas os pinos dentro da area util do tabuleiro
     if (pino.x < cx + largura / 2 - 50) {

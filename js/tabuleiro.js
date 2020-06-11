@@ -18,8 +18,18 @@ Tabuleiro.prototype.draw = function (context) {
   context.save();
   context.translate(this.x - this.largura / 2, this.y - this.altura / 2);
 
+  // Desenha o fundo do tabuleiro
+  context.lineWidth = 0;
+  context.fillStyle = this.color;
+  context.globalAlpha = 0.5;
+  context.beginPath();
+  context.fillRect(0, 0, this.largura, this.altura);
+  context.closePath();
+
+  // Desenha as bordas do tabuleiro
   context.lineWidth = this.lineWidth;
   context.fillStyle = this.color;
+  context.globalAlpha = 1;
   context.beginPath();
   context.rect(0, 0, this.espessura, this.altura);
   context.rect(

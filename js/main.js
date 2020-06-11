@@ -54,10 +54,10 @@ for (var i = 0; i < 7; i++) {
     // Cria pino com raio 5
     var pino = new Pino(5, cor_madeira);
     // Se for uma linha par, o primeiro pino
-    // da linha começa na posição x = 110
+    // da linha começa na posição x = 105
     if (i % 2 == 0) pino.x = cx - largura / 2 + 105 + 60 * j;
     // Se for uma linha impar, o primeiro pino
-    // da linha começa na posição x = 80
+    // da linha começa na posição x = 75
     else pino.x = cx - largura / 2 + 75 + 60 * j;
     pino.y = cy - altura / 2 + 60 + 60 * i;
     // Desenha apenas os pinos dentro da area util do tabuleiro
@@ -72,6 +72,12 @@ var pontuacao = new Pontuacao(200, 100, "blue");
 pontuacao.x = 50;
 pontuacao.y = 50;
 pontuacao.draw(context);
+
+// Cria Texto com apresentação do jogo
+var texto = new Texto(200, 100, "red");
+texto.x = cx + largura / 2 + 50;
+texto.y = cy - altura / 2;
+texto.draw(context);
 
 // Cria disco com raio 20 e cor vermelha
 var disco = new Disco(20, "red");

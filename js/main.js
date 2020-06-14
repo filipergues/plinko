@@ -1,6 +1,10 @@
 var canvas = document.getElementById("canvas"),
   context = canvas.getContext("2d");
 
+// Captura Rato
+var mouse = utils.captureMouse(canvas);
+var isMouseDown = false;
+
 // Valores da gravidade e ricochete
 var gravity = 0.2;
 var bounce = -0.6;
@@ -99,35 +103,45 @@ function drawTexto() {
 }
 
 // Cria disco com raio 20 e cor vermelha
-
 var disco = new Disco(20, "red");
 disco.x = cx;
 disco.y = 50;
+
+function checkBoundaries() {
+  var left = tabuleiroBounds.x,
+    right = tabuleiroBounds.width,
+    top = 0,
+    bottom = tabuleiroBounds.height;
+
+  disco.vy += gravity;
+  disco.x += disco.vx;
+  disco.y += disco.vy;
+  //boundary detect and bounce
+  if (disco.x + disco.radius > right) {
+    disco.x = right - disco.radius;
+    disco.vx *= bounce;
+  } else if (disco.x - disco.radius < left) {
+    disco.x = left + disco.radius;
+    disco.vx *= bounce;
+  }
+  if (disco.y + disco.radius > bottom) {
+    disco.y = bottom - disco.radius;
+    disco.vy *= bounce;
+  } else if (disco.y - disco.radius < top) {
+    disco.y = top + disco.radius;
+    disco.vy *= bounce;
+  }
+}
 
 // Animação
 (function drawFrame() {
   window.requestAnimationFrame(drawFrame, canvas);
   context.clearRect(0, 0, canvas.width, canvas.height);
 
-  //normal motion code
-  disco.vy += gravity;
-  disco.x += disco.vx;
-  disco.y += disco.vy;
-  //bounce off ceiling, floor, and walls
-  if (disco.x + disco.radius > tabuleiroBounds.width) {
-    disco.x = tabuleiroBounds.width - disco.radius;
-    disco.vx *= bounce;
-  } else if (disco.x - disco.radius < tabuleiroBounds.x) {
-    disco.x = disco.radius;
-    disco.vx *= bounce;
+  if (!isMouseDown) {
+    checkBoundaries();
   }
-  if (disco.y + disco.radius > tabuleiroBounds.height) {
-    disco.y = tabuleiroBounds.height - disco.radius;
-    disco.vy *= bounce;
-  } else if (disco.y - disco.radius < 0) {
-    disco.y = disco.radius;
-    disco.vy *= bounce;
-  }
+
   drawTabuleiro();
   drawGavetas();
   drawDivisorias();
@@ -137,3 +151,32 @@ disco.y = 50;
   drawTexto();
   disco.draw(context);
 })();
+
+canvas.addEventListener(
+  "mousedown",
+  function () {
+    if (utils.containsPoint(disco.getBounds(), mouse.x, mouse.y)) {
+      isMouseDown = true;
+      disco.vx = disco.vy = 0;
+      canvas.addEventListener("mouseup", onMouseUp, false);
+      canvas.addEventListener("mousemove", onMouseMove, false);
+    }
+  },
+  false
+);
+
+function onMouseUp() {
+  isMouseDown = false;
+  canvas.removeEventListener("mouseup", onMouseUp, false);
+  canvas.removeEventListener("mousemove", onMouseMove, false);
+}
+
+function onMouseMove(event) {
+  if (
+    mouse.x < tabuleiroBounds.width - disco.radius &&
+    mouse.x > tabuleiroBounds.x + disco.radius
+  )
+    disco.x = mouse.x;
+  if (mouse.y < tabuleiroBounds.height - disco.radius && mouse.y > disco.radius)
+    disco.y = mouse.y;
+}

@@ -50,9 +50,9 @@ Tabuleiro.prototype.draw = function (context) {
 // Limites interiores do tabuleiro
 Tabuleiro.prototype.getBounds = function () {
   return {
-    x: this.x + this.espessura,
-    y: this.y,
-    width: this.largura - this.espessura * 2,
-    height: this.altura - this.espessura,
+    x: this.x - this.largura / 2 + this.espessura,
+    y: this.y - this.altura / 2,
+    width: this.x + this.largura / 2 - this.espessura,
+    height: this.y + this.altura / 2 - this.espessura,
   };
 };

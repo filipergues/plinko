@@ -46,3 +46,13 @@ Tabuleiro.prototype.draw = function (context) {
   }
   context.restore();
 };
+
+// Limites interiores do tabuleiro
+Tabuleiro.prototype.getBounds = function () {
+  return {
+    x: this.x + this.espessura,
+    y: this.y,
+    width: this.largura - this.espessura * 2,
+    height: this.altura - this.espessura,
+  };
+};

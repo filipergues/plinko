@@ -27,3 +27,12 @@ Divisoria.prototype.draw = function (context) {
   }
   context.restore();
 };
+
+Divisoria.prototype.getBounds = function () {
+  return {
+    x: this.x,
+    y: this.y - this.largura / 2,
+    width: this.largura,
+    height: this.altura + this.largura / 2,
+  };
+};

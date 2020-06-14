@@ -24,3 +24,12 @@ Gaveta.prototype.draw = function (context) {
   }
   context.restore();
 };
+
+Gaveta.prototype.getBounds = function () {
+  return {
+    x: this.x,
+    y: this.y,
+    width: this.largura,
+    height: this.altura,
+  };
+};

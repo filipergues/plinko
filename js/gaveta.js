@@ -29,7 +29,7 @@ Gaveta.prototype.getBounds = function () {
   return {
     x: this.x,
     y: this.y,
-    width: this.largura,
-    height: this.altura,
+    width: this.x + this.largura,
+    height: this.y + this.altura,
   };
 };

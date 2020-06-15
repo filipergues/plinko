@@ -45,6 +45,7 @@ function drawGavetas(gaveta) {
 var divisorias = [];
 for (var d = 0; d < 6; d++) {
   var divisoria = new Divisoria(10, 50, cor_madeira);
+  divisoria.mass = 8;
   divisoria.x = cx - largura / 2 + 70 + 60 * d;
   divisoria.y = cy + altura / 2 - 70;
   divisorias.push(divisoria);
@@ -75,7 +76,7 @@ var pinos = [];
 for (var i = 0; i < 7; i++) {
   for (var j = 0; j < 8; j++) {
     var pino = new Pino(5, cor_madeira);
-    pino.mass = 10;
+    pino.mass = 8;
     // Se for uma linha par, o primeiro pino
     // da linha começa na posição x = 105
     if (i % 2 == 0) pino.x = cx - largura / 2 + 105 + 60 * j;
@@ -110,7 +111,7 @@ function drawTexto(texto) {
   texto.draw(context);
 }
 
-// Cria disco com raio 20 e cor vermelha
+// Cria disco com raio 18 e cor vermelha
 var disco = new Disco(18, "red");
 disco.x = cx;
 disco.y = 50;
@@ -138,72 +139,64 @@ function checkCollision(disco, pino) {
       cos = Math.cos(angle),
       //rotate disco's position
       pos0 = { x: 0, y: 0 }, //point
-      //rotate pino's position
-      pos1 = rotate(dx, dy, sin, cos, true),
       //rotate disco's velocity
-      vel0 = rotate(disco.vx, disco.vy, sin, cos, true),
-      //rotate pino's velocity
-      vel1 = rotate(pino.vx, pino.vy, sin, cos, true),
-      //collision reaction
-      vxTotal = vel0.x - vel1.x;
-    vel0.x =
-      ((disco.mass - pino.mass) * vel0.x + 2 * pino.mass * vel1.x) /
-      (disco.mass + pino.mass);
-    vel1.x = 0;
+      vel0 = rotate(disco.vx, disco.vy, sin, cos, true);
+    //collision reaction
+    vel0.x = ((disco.mass - pino.mass) * vel0.x) / (disco.mass + pino.mass);
     //update position
     pos0.x += vel0.x;
-    pos1.x += vel1.x;
     //rotate positions back
-    var pos0F = rotate(pos0.x, pos0.y, sin, cos, false),
-      pos1F = rotate(pos1.x, pos1.y, sin, cos, false);
+    var pos0F = rotate(pos0.x, pos0.y, sin, cos, false);
     //adjust positions to actual screen positions
-    pino.x = disco.x + pos1F.x;
-    pino.y = disco.y + pos1F.y;
     disco.x = disco.x + pos0F.x;
     disco.y = disco.y + pos0F.y;
     //rotate velocities back
-    var vel0F = rotate(vel0.x, vel0.y, sin, cos, false),
-      vel1F = rotate(vel1.x, vel1.y, sin, cos, false);
+    var vel0F = rotate(vel0.x, vel0.y, sin, cos, false);
     disco.vx = vel0F.x;
     disco.vy = vel0F.y;
-    pino.vx = vel1F.x;
-    pino.vy = vel1F.y;
   }
 }
 
 function checkCollisionDivisorias(disco, divisoria) {
+  var dx = divisoria.x + divisoria.largura / 2 - disco.x,
+    dy = divisoria.y - disco.y,
+    dist = Math.sqrt(dx * dx + dy * dy);
+  //collision handling code here
+  if (dist < disco.radius + divisoria.largura / 2) {
+    //calculate angle, sine, and cosine
+    var angle = Math.atan2(dy, dx),
+      sin = Math.sin(angle),
+      cos = Math.cos(angle),
+      //rotate disco's position
+      pos0 = { x: 0, y: 0 }, //point
+      //rotate disco's velocity
+      vel0 = rotate(disco.vx, disco.vy, sin, cos, true);
+    //collision reaction
+    vel0.x =
+      ((disco.mass - divisoria.mass) * vel0.x) / (disco.mass + divisoria.mass);
+    //update position
+    pos0.x += vel0.x;
+    //rotate positions back
+    var pos0F = rotate(pos0.x, pos0.y, sin, cos, false);
+    //adjust positions to actual screen positions
+    disco.x = disco.x + pos0F.x;
+    disco.y = disco.y + pos0F.y;
+    //rotate velocities back
+    var vel0F = rotate(vel0.x, vel0.y, sin, cos, false);
+    disco.vx = vel0F.x;
+    disco.vy = vel0F.y;
+  }
+
   // let divisoriaBounds = divisoria.getBounds();
   // let left = divisoriaBounds.x,
-  //   right = divisoriaBounds.width,
-  //   top = divisoriaBounds.y,
-  //   bottom = divisoriaBounds.height;
-  // if (disco.x + disco.radius > left && disco.x - disco.radius < right) {
-  //   //get angle, sine, and cosine
-  //   var cos = Math.cos(divisoria.rotation),
-  //     sin = Math.sin(divisoria.rotation),
-  //     //get position of disco, relative to divisoria
-  //     x1 = disco.x - divisoria.x,
-  //     y1 = disco.y - divisoria.y,
-  //     //rotate coordinates
-  //     y2 = cos * y1 - sin * x1,
-  //     //rotate velocity
-  //     vy1 = cos * disco.vy - sin * disco.vx;
-  //   //perform bounce with rotated values
-  //   if (y2 > -disco.radius && y2 < vy1) {
-  //     //rotate coordinates
-  //     var x2 = cos * x1 + sin * y1,
-  //       //rotate velocity
-  //       vx1 = cos * disco.vx + sin * disco.vy;
-  //     y2 = -disco.radius;
-  //     vy1 *= bounce;
-  //     //rotate everything back
-  //     x1 = cos * x2 - sin * y2;
-  //     y1 = cos * y2 + sin * x2;
-  //     disco.vx = cos * vx1 - sin * vy1;
-  //     disco.vy = cos * vy1 + sin * vx1;
-  //     disco.x = divisoria.x + x1;
-  //     disco.y = divisoria.y + y1;
-  //   }
+  //   right = divisoriaBounds.width;
+
+  // if (disco.x + disco.radius > left) {
+  //   // disco.x = left - disco.radius;
+  //   disco.vx *= bounce;
+  // } else if (disco.x - disco.radius < right) {
+  //   // disco.x = right + disco.radius;
+  //   disco.vx *= bounce;
   // }
 }
 

@@ -50,6 +50,7 @@ for (var d = 0; d < 6; d++) {
   divisorias.push(divisoria);
 }
 function drawDivisorias(divisoria) {
+  checkCollisionDivisorias(disco, divisoria);
   divisoria.draw(context);
 }
 
@@ -69,24 +70,28 @@ function drawTabelas() {
   }
 }
 
-// Cria pino com raio 5
-var pino = new Pino(5, cor_madeira);
-function drawPinos(pino) {
-  for (var i = 0; i < 7; i++) {
-    for (var j = 0; j < 8; j++) {
-      // Se for uma linha par, o primeiro pino
-      // da linha começa na posição x = 105
-      if (i % 2 == 0) pino.x = cx - largura / 2 + 105 + 60 * j;
-      // Se for uma linha impar, o primeiro pino
-      // da linha começa na posição x = 75
-      else pino.x = cx - largura / 2 + 75 + 60 * j;
-      pino.y = cy - altura / 2 + 60 + 60 * i;
-      // Desenha apenas os pinos dentro da area util do tabuleiro
-      if (pino.x < cx + largura / 2 - 50) {
-        pino.draw(context);
-      }
+// Cria pinos com raio 5
+var pinos = [];
+for (var i = 0; i < 7; i++) {
+  for (var j = 0; j < 8; j++) {
+    var pino = new Pino(5, cor_madeira);
+    pino.mass = 10;
+    // Se for uma linha par, o primeiro pino
+    // da linha começa na posição x = 105
+    if (i % 2 == 0) pino.x = cx - largura / 2 + 105 + 60 * j;
+    // Se for uma linha impar, o primeiro pino
+    // da linha começa na posição x = 75
+    else pino.x = cx - largura / 2 + 75 + 60 * j;
+    pino.y = cy - altura / 2 + 60 + 60 * i;
+    // Desenha apenas os pinos dentro da area util do tabuleiro
+    if (pino.x < cx + largura / 2 - 50) {
+      pinos.push(pino);
     }
   }
+}
+function drawPinos(pino) {
+  checkCollision(disco, pino);
+  pino.draw(context);
 }
 
 // Cria display com a pontuação
@@ -106,15 +111,105 @@ function drawTexto(texto) {
 }
 
 // Cria disco com raio 20 e cor vermelha
-var disco = new Disco(20, "red");
+var disco = new Disco(18, "red");
 disco.x = cx;
 disco.y = 50;
 function drawDisco(disco) {
   disco.draw(context);
 }
 
+function rotate(x, y, sin, cos, reverse) {
+  return {
+    x: reverse ? x * cos + y * sin : x * cos - y * sin,
+    y: reverse ? y * cos - x * sin : y * cos + x * sin,
+  };
+}
+
+// Colisão com os pinos
+function checkCollision(disco, pino) {
+  var dx = pino.x - disco.x,
+    dy = pino.y - disco.y,
+    dist = Math.sqrt(dx * dx + dy * dy);
+  //collision handling code here
+  if (dist < disco.radius + pino.radius) {
+    //calculate angle, sine, and cosine
+    var angle = Math.atan2(dy, dx),
+      sin = Math.sin(angle),
+      cos = Math.cos(angle),
+      //rotate disco's position
+      pos0 = { x: 0, y: 0 }, //point
+      //rotate pino's position
+      pos1 = rotate(dx, dy, sin, cos, true),
+      //rotate disco's velocity
+      vel0 = rotate(disco.vx, disco.vy, sin, cos, true),
+      //rotate pino's velocity
+      vel1 = rotate(pino.vx, pino.vy, sin, cos, true),
+      //collision reaction
+      vxTotal = vel0.x - vel1.x;
+    vel0.x =
+      ((disco.mass - pino.mass) * vel0.x + 2 * pino.mass * vel1.x) /
+      (disco.mass + pino.mass);
+    vel1.x = 0;
+    //update position
+    pos0.x += vel0.x;
+    pos1.x += vel1.x;
+    //rotate positions back
+    var pos0F = rotate(pos0.x, pos0.y, sin, cos, false),
+      pos1F = rotate(pos1.x, pos1.y, sin, cos, false);
+    //adjust positions to actual screen positions
+    pino.x = disco.x + pos1F.x;
+    pino.y = disco.y + pos1F.y;
+    disco.x = disco.x + pos0F.x;
+    disco.y = disco.y + pos0F.y;
+    //rotate velocities back
+    var vel0F = rotate(vel0.x, vel0.y, sin, cos, false),
+      vel1F = rotate(vel1.x, vel1.y, sin, cos, false);
+    disco.vx = vel0F.x;
+    disco.vy = vel0F.y;
+    pino.vx = vel1F.x;
+    pino.vy = vel1F.y;
+  }
+}
+
+function checkCollisionDivisorias(disco, divisoria) {
+  // let divisoriaBounds = divisoria.getBounds();
+  // let left = divisoriaBounds.x,
+  //   right = divisoriaBounds.width,
+  //   top = divisoriaBounds.y,
+  //   bottom = divisoriaBounds.height;
+  // if (disco.x + disco.radius > left && disco.x - disco.radius < right) {
+  //   //get angle, sine, and cosine
+  //   var cos = Math.cos(divisoria.rotation),
+  //     sin = Math.sin(divisoria.rotation),
+  //     //get position of disco, relative to divisoria
+  //     x1 = disco.x - divisoria.x,
+  //     y1 = disco.y - divisoria.y,
+  //     //rotate coordinates
+  //     y2 = cos * y1 - sin * x1,
+  //     //rotate velocity
+  //     vy1 = cos * disco.vy - sin * disco.vx;
+  //   //perform bounce with rotated values
+  //   if (y2 > -disco.radius && y2 < vy1) {
+  //     //rotate coordinates
+  //     var x2 = cos * x1 + sin * y1,
+  //       //rotate velocity
+  //       vx1 = cos * disco.vx + sin * disco.vy;
+  //     y2 = -disco.radius;
+  //     vy1 *= bounce;
+  //     //rotate everything back
+  //     x1 = cos * x2 - sin * y2;
+  //     y1 = cos * y2 + sin * x2;
+  //     disco.vx = cos * vx1 - sin * vy1;
+  //     disco.vy = cos * vy1 + sin * vx1;
+  //     disco.x = divisoria.x + x1;
+  //     disco.y = divisoria.y + y1;
+  //   }
+  // }
+}
+
+// Deteta limites do tabuleiro e faz ricochete
 function checkBoundaries() {
-  var left = tabuleiroBounds.x,
+  let left = tabuleiroBounds.x,
     right = tabuleiroBounds.width,
     top = 0,
     bottom = tabuleiroBounds.height;
@@ -150,7 +245,7 @@ function checkBoundaries() {
   gavetas.forEach(drawGavetas);
   divisorias.forEach(drawDivisorias);
   drawTabelas();
-  drawPinos(pino);
+  pinos.forEach(drawPinos);
   drawPontuacao(pontuacao);
   drawTexto(texto);
   drawDisco(disco);

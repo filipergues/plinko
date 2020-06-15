@@ -187,17 +187,14 @@ function checkCollisionDivisorias(disco, divisoria) {
     disco.vy = vel0F.y;
   }
 
-  // let divisoriaBounds = divisoria.getBounds();
-  // let left = divisoriaBounds.x,
-  //   right = divisoriaBounds.width;
-
-  // if (disco.x + disco.radius > left) {
-  //   // disco.x = left - disco.radius;
-  //   disco.vx *= bounce;
-  // } else if (disco.x - disco.radius < right) {
-  //   // disco.x = right + disco.radius;
-  //   disco.vx *= bounce;
-  // }
+  var divisoriaBounds = divisoria.getBounds();
+  var dx1 = divisoriaBounds.x - disco.x;
+  var dx2 = divisoriaBounds.width - disco.x;
+  if (dx1 < disco.radius && disco.y > divisoriaBounds.y) {
+    disco.vx *= bounce;
+  } else if (dx2 < disco.radius && disco.y > divisoriaBounds.y) {
+    disco.vx *= bounce;
+  }
 }
 
 // Deteta limites do tabuleiro e faz ricochete

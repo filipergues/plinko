@@ -7,7 +7,7 @@ var isMouseDown = false;
 
 // Valores da gravidade e ricochete
 var gravity = 0.2;
-var bounce = -0.5;
+var bounce = -0.6;
 
 // Centro do canvas
 var cx = canvas.width / 2;
@@ -47,7 +47,7 @@ function drawGavetas(gaveta) {
 var divisorias = [];
 for (var d = 0; d < 6; d++) {
   var divisoria = new Divisoria(10, 50, cor_madeira);
-  divisoria.mass = 8;
+  divisoria.mass = 7;
   divisoria.x = cx - largura / 2 + 70 + 60 * d;
   divisoria.y = cy + altura / 2 - 70;
   divisorias.push(divisoria);
@@ -81,7 +81,7 @@ var pinos = [];
 for (var i = 0; i < 7; i++) {
   for (var j = 0; j < 8; j++) {
     var pino = new Pino(5, cor_madeira);
-    pino.mass = 8;
+    pino.mass = 7;
     // Se for uma linha par, o primeiro pino
     // da linha começa na posição x = 105
     if (i % 2 == 0) pino.x = cx - largura / 2 + 105 + 60 * j;
@@ -124,8 +124,8 @@ function drawRegras(regras) {
   regras.draw(context);
 }
 
-// Cria disco com raio 18 e cor vermelha
-var disco = new Disco(18, "red");
+// Cria disco com raio 20 e cor vermelha
+var disco = new Disco(20, "red");
 disco.x = cx;
 disco.y = 50;
 function drawDisco(disco) {
@@ -180,8 +180,9 @@ function checkCollisionDivisorias(disco, divisoria) {
   //collision handling code here
   if (dist < disco.radius + divisoria.largura / 2) {
     //calculate angle, sine, and cosine
-    var angle = Math.atan2(dy, dx),
-      sin = Math.sin(angle),
+    var angle = Math.atan2(dy, dx);
+    if (angle === Math.PI / 2) angle += (Math.random() + 0.01) / 10;
+    var sin = Math.sin(angle),
       cos = Math.cos(angle),
       //rotate disco's position
       pos = { x: 0, y: 0 }, //point
@@ -216,7 +217,8 @@ function checkCollisionDivisorias(disco, divisoria) {
 // Colisão com tabelas
 function checkCollisionTabelas(disco, tabela) {
   let tabelaBounds = tabela.getBounds();
-  var dx = tabela.largura;
+  var dx = tabela.largura,
+    dy = tabela.altura / 2;
   if (
     (disco.x - disco.radius > tabelaBounds.x &&
       disco.x - disco.radius < tabelaBounds.width) ||
@@ -224,31 +226,39 @@ function checkCollisionTabelas(disco, tabela) {
       disco.x + disco.radius < tabelaBounds.width)
   ) {
     // //get angle, sine, and cosine
-    // var cos = Math.cos(tabela.rotation),
-    //   sin = Math.sin(tabela.rotation),
-    //   //get position of disco, relative to tabela
-    //   x1 = disco.x - tabela.x,
-    //   y1 = disco.y - tabela.y,
-    //   //rotate coordinates
-    //   y2 = cos * y1 - sin * x1,
-    //   //rotate velocity
-    //   vy1 = cos * disco.vy - sin * disco.vx;
-    // //perform bounce with rotated values
-    // if (y2 > -disco.radius && y2 < vy1) {
-    //   //rotate coordinates
-    //   var x2 = cos * x1 + sin * y1,
-    //     //rotate velocity
-    //     vx1 = cos * disco.vx + sin * disco.vy;
-    //   y2 = -disco.radius;
-    //   vy1 *= bounce;
-    //   //rotate everything back
-    //   x1 = cos * x2 - sin * y2;
-    //   y1 = cos * y2 + sin * x2;
-    //   disco.vx = cos * vx1 - sin * vy1;
-    //   disco.vy = cos * vy1 + sin * vx1;
-    //   disco.x = tabela.x + x1;
-    //   disco.y = tabela.y + y1;
-    // }
+    var angle = Math.atan2(dy, dx);
+    if (tabela.posicao === -1) {
+      angle = -angle;
+    }
+    var cos = Math.cos(angle),
+      sin = Math.sin(angle),
+      //get position of disco, relative to tabela
+      x1 = disco.x - tabela.x,
+      y1 = disco.y - tabela.y,
+      //rotate coordinates
+      y2 = cos * y1 - sin * x1,
+      //rotate velocity
+      vy1 = cos * disco.vy - sin * disco.vx;
+    //perform bounce with rotated values
+    if (y2 > -disco.radius && y2 < vy1) {
+      //rotate coordinates
+      var x2 = cos * x1 + sin * y1,
+        //rotate velocity
+        vx1 = cos * disco.vx + sin * disco.vy;
+      if (disco.y > tabela.y + tabela.altura / 2) {
+        x2 += Math.PI;
+        vx1 += Math.PI;
+      }
+      y2 = -disco.radius;
+      vy1 *= bounce;
+      //rotate everything back
+      x1 = cos * x2 - sin * y2;
+      y1 = cos * y2 + sin * x2;
+      disco.vx = cos * vx1 - sin * vy1;
+      disco.vy = cos * vy1 + sin * vx1;
+      disco.x = tabela.x + x1;
+      disco.y = tabela.y + y1;
+    }
   }
 }
 

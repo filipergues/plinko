@@ -25,28 +25,32 @@ tabuleiro.x = cx;
 tabuleiro.y = cy;
 // Limites do tabuleiro
 var tabuleiroBounds = tabuleiro.getBounds();
-function drawTabuleiro() {
+function drawTabuleiro(tabuleiro) {
   tabuleiro.draw(context);
 }
 
 // Cria 7 gavetas de 50x50
-function drawGavetas() {
-  for (let g = 0; g < 7; g++) {
-    var gaveta_central = new Gaveta(50, 50, "blue");
-    gaveta_central.x = cx - largura / 2 + espessura + 60 * g;
-    gaveta_central.y = cy + altura / 2 - espessura;
-    gaveta_central.draw(context);
-  }
+var gavetas = [];
+for (let g = 0; g < 7; g++) {
+  var gaveta = new Gaveta(50, 50, "blue");
+  gaveta.x = cx - largura / 2 + espessura + 60 * g;
+  gaveta.y = cy + altura / 2 - espessura;
+  gavetas.push(gaveta);
+}
+function drawGavetas(gaveta) {
+  gaveta.draw(context);
 }
 
 // Cria divisórias entre as gavetas
-function drawDivisorias() {
-  for (var d = 0; d < 6; d++) {
-    var divisoria = new Divisoria(10, 50, cor_madeira);
-    divisoria.x = cx - largura / 2 + 70 + 60 * d;
-    divisoria.y = cy + altura / 2 - 70;
-    divisoria.draw(context);
-  }
+var divisorias = [];
+for (var d = 0; d < 6; d++) {
+  var divisoria = new Divisoria(10, 50, cor_madeira);
+  divisoria.x = cx - largura / 2 + 70 + 60 * d;
+  divisoria.y = cy + altura / 2 - 70;
+  divisorias.push(divisoria);
+}
+function drawDivisorias(divisoria) {
+  divisoria.draw(context);
 }
 
 // Cria 4 tabelas de cada lado
@@ -65,12 +69,11 @@ function drawTabelas() {
   }
 }
 
-// Cria 7 linhas com 5 ou 6 pinos alternados
-function drawPinos() {
+// Cria pino com raio 5
+var pino = new Pino(5, cor_madeira);
+function drawPinos(pino) {
   for (var i = 0; i < 7; i++) {
     for (var j = 0; j < 8; j++) {
-      // Cria pino com raio 5
-      var pino = new Pino(5, cor_madeira);
       // Se for uma linha par, o primeiro pino
       // da linha começa na posição x = 105
       if (i % 2 == 0) pino.x = cx - largura / 2 + 105 + 60 * j;
@@ -87,16 +90,16 @@ function drawPinos() {
 }
 
 // Cria display com a pontuação
-function drawPontuacao() {
-  var pontuacao = new Pontuacao(200, 100, "blue");
+var pontuacao = new Pontuacao(200, 100, "blue");
+function drawPontuacao(pontuacao) {
   pontuacao.x = 50;
   pontuacao.y = 50;
   pontuacao.draw(context);
 }
 
 // Cria Texto com apresentação do jogo
-function drawTexto() {
-  var texto = new Texto(200, 100, "red");
+var texto = new Texto(200, 100, "red");
+function drawTexto(texto) {
   texto.x = cx + largura / 2 + 50;
   texto.y = cy - altura / 2;
   texto.draw(context);
@@ -106,6 +109,9 @@ function drawTexto() {
 var disco = new Disco(20, "red");
 disco.x = cx;
 disco.y = 50;
+function drawDisco(disco) {
+  disco.draw(context);
+}
 
 function checkBoundaries() {
   var left = tabuleiroBounds.x,
@@ -138,18 +144,16 @@ function checkBoundaries() {
   window.requestAnimationFrame(drawFrame, canvas);
   context.clearRect(0, 0, canvas.width, canvas.height);
 
-  if (!isMouseDown) {
-    checkBoundaries();
-  }
+  if (!isMouseDown) checkBoundaries();
 
-  drawTabuleiro();
-  drawGavetas();
-  drawDivisorias();
+  drawTabuleiro(tabuleiro);
+  gavetas.forEach(drawGavetas);
+  divisorias.forEach(drawDivisorias);
   drawTabelas();
-  drawPinos();
-  drawPontuacao();
-  drawTexto();
-  disco.draw(context);
+  drawPinos(pino);
+  drawPontuacao(pontuacao);
+  drawTexto(texto);
+  drawDisco(disco);
 })();
 
 canvas.addEventListener(

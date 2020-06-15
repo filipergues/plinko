@@ -6,6 +6,7 @@ function Divisoria(largura, altura, color) {
   this.y = 0;
   this.largura = largura;
   this.altura = altura;
+  this.rotation = 0;
   this.color = utils.parseColor(color);
   this.lineWidth = 1;
 }
@@ -32,7 +33,7 @@ Divisoria.prototype.getBounds = function () {
   return {
     x: this.x,
     y: this.y - this.largura / 2,
-    width: this.largura,
-    height: this.altura + this.largura / 2,
+    width: this.x + this.largura,
+    height: this.y + this.altura,
   };
 };

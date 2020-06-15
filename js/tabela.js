@@ -47,3 +47,12 @@ Tabela.prototype.draw = function (context) {
   }
   context.restore();
 };
+
+Tabela.prototype.getBounds = function () {
+  return {
+    x: this.x,
+    y: this.y,
+    width: this.x + this.largura,
+    height: this.y + this.altura,
+  };
+};

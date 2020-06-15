@@ -1,4 +1,4 @@
-function Gaveta(largura, altura, color) {
+function Gaveta(largura, altura, color, ponto) {
   if (color === undefined) {
     color = "blue";
   }
@@ -8,6 +8,7 @@ function Gaveta(largura, altura, color) {
   this.altura = altura;
   this.color = utils.parseColor(color);
   this.lineWidth = 0;
+  this.ponto = ponto;
 }
 
 Gaveta.prototype.draw = function (context) {
@@ -19,6 +20,17 @@ Gaveta.prototype.draw = function (context) {
   context.rect(0, 0, this.largura, -this.altura);
   context.closePath();
   context.fill();
+
+  context.beginPath();
+  context.globalAlpha = 1;
+  context.fillStyle = "white";
+  context.font = "10px Arial";
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+  context.fillText(this.ponto, this.largura / 2, -this.altura / 2);
+  context.closePath();
+  context.fill();
+
   if (this.lineWidth > 0) {
     context.stroke();
   }

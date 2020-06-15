@@ -31,10 +31,12 @@ function drawTabuleiro(tabuleiro) {
 
 // Cria 7 gavetas de 50x50
 var gavetas = [];
+//var pontos = [100, 200, 500, 0];
 for (let g = 0; g < 7; g++) {
   var gaveta = new Gaveta(50, 50, "blue");
   gaveta.x = cx - largura / 2 + espessura + 60 * g;
   gaveta.y = cy + altura / 2 - espessura;
+  gaveta.ponto = 10 * g;
   gavetas.push(gaveta);
 }
 function drawGavetas(gaveta) {

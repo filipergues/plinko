@@ -7,7 +7,7 @@ var isMouseDown = false;
 
 // Valores da gravidade e ricochete
 var gravity = 0.2;
-var bounce = -0.6;
+var bounce = -0.5;
 
 // Centro do canvas
 var cx = canvas.width / 2;
@@ -45,7 +45,7 @@ function drawGavetas(gaveta) {
 var divisorias = [];
 for (var d = 0; d < 6; d++) {
   var divisoria = new Divisoria(10, 50, cor_madeira);
-  divisoria.mass = 6;
+  divisoria.mass = 8;
   divisoria.x = cx - largura / 2 + 70 + 60 * d;
   divisoria.y = cy + altura / 2 - 70;
   divisorias.push(divisoria);
@@ -56,19 +56,22 @@ function drawDivisorias(divisoria) {
 }
 
 // Cria 4 tabelas de cada lado
-function drawTabelas() {
-  for (var t = 0; t < 4; t++) {
-    // Terceiro argumento com valor 1 refere-se à posição esquerda
-    var tabela_esquerda = new Tabela(30, 120, 1, cor_madeira);
-    tabela_esquerda.x = cx - largura / 2 + espessura;
-    tabela_esquerda.y = cy - altura / 2 + 120 * t;
-    tabela_esquerda.draw(context);
-    // Terceiro argumento com valor -1 refere-se à posição direita
-    var tabela_direita = new Tabela(30, 120, -1, cor_madeira);
-    tabela_direita.x = cx + largura / 2 - espessura;
-    tabela_direita.y = cy - altura / 2 + 120 * t;
-    tabela_direita.draw(context);
-  }
+var tabelas = [];
+for (var t = 0; t < 4; t++) {
+  // Terceiro argumento com valor 1 refere-se à posição esquerda
+  var tabela_esquerda = new Tabela(30, 120, 1, cor_madeira);
+  tabela_esquerda.x = cx - largura / 2 + espessura;
+  tabela_esquerda.y = cy - altura / 2 + 120 * t;
+  tabelas.push(tabela_esquerda);
+  // Terceiro argumento com valor -1 refere-se à posição direita
+  var tabela_direita = new Tabela(30, 120, -1, cor_madeira);
+  tabela_direita.x = cx + largura / 2 - espessura;
+  tabela_direita.y = cy - altura / 2 + 120 * t;
+  tabelas.push(tabela_direita);
+}
+function drawTabelas(tabela) {
+  checkCollisionTabelas(disco, tabela);
+  tabela.draw(context);
 }
 
 // Cria pinos com raio 5
@@ -76,7 +79,7 @@ var pinos = [];
 for (var i = 0; i < 7; i++) {
   for (var j = 0; j < 8; j++) {
     var pino = new Pino(5, cor_madeira);
-    pino.mass = 6;
+    pino.mass = 8;
     // Se for uma linha par, o primeiro pino
     // da linha começa na posição x = 105
     if (i % 2 == 0) pino.x = cx - largura / 2 + 105 + 60 * j;
@@ -159,6 +162,7 @@ function checkCollision(disco, pino) {
   }
 }
 
+// Colisão com divisórias
 function checkCollisionDivisorias(disco, divisoria) {
   var dx = divisoria.x + divisoria.largura / 2 - disco.x,
     dy = divisoria.y - disco.y,
@@ -199,6 +203,45 @@ function checkCollisionDivisorias(disco, divisoria) {
   }
 }
 
+// Colisão com tabelas
+function checkCollisionTabelas(disco, tabela) {
+  let tabelaBounds = tabela.getBounds();
+  var dx = tabela.largura;
+  if (
+    (disco.x - disco.radius > tabelaBounds.x &&
+      disco.x - disco.radius < tabelaBounds.width) ||
+    (disco.x + disco.radius > tabelaBounds.x - 30 &&
+      disco.x + disco.radius < tabelaBounds.width)
+  ) {
+    // //get angle, sine, and cosine
+    // var cos = Math.cos(tabela.rotation),
+    //   sin = Math.sin(tabela.rotation),
+    //   //get position of disco, relative to tabela
+    //   x1 = disco.x - tabela.x,
+    //   y1 = disco.y - tabela.y,
+    //   //rotate coordinates
+    //   y2 = cos * y1 - sin * x1,
+    //   //rotate velocity
+    //   vy1 = cos * disco.vy - sin * disco.vx;
+    // //perform bounce with rotated values
+    // if (y2 > -disco.radius && y2 < vy1) {
+    //   //rotate coordinates
+    //   var x2 = cos * x1 + sin * y1,
+    //     //rotate velocity
+    //     vx1 = cos * disco.vx + sin * disco.vy;
+    //   y2 = -disco.radius;
+    //   vy1 *= bounce;
+    //   //rotate everything back
+    //   x1 = cos * x2 - sin * y2;
+    //   y1 = cos * y2 + sin * x2;
+    //   disco.vx = cos * vx1 - sin * vy1;
+    //   disco.vy = cos * vy1 + sin * vx1;
+    //   disco.x = tabela.x + x1;
+    //   disco.y = tabela.y + y1;
+    // }
+  }
+}
+
 // Deteta limites do tabuleiro e faz ricochete
 function checkBoundaries() {
   let left = tabuleiroBounds.x,
@@ -236,7 +279,7 @@ function checkBoundaries() {
   drawTabuleiro(tabuleiro);
   gavetas.forEach(drawGavetas);
   divisorias.forEach(drawDivisorias);
-  drawTabelas();
+  tabelas.forEach(drawTabelas);
   pinos.forEach(drawPinos);
   drawPontuacao(pontuacao);
   drawTexto(texto);

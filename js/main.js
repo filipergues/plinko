@@ -111,6 +111,14 @@ function drawTexto(texto) {
   texto.draw(context);
 }
 
+// Texto com regras do jogo
+var regras = new Regras(200, 200, "black");
+function drawRegras(regras) {
+  regras.x = 50;
+  regras.y = 150;
+  regras.draw(context);
+}
+
 // Cria disco com raio 18 e cor vermelha
 var disco = new Disco(18, "red");
 disco.x = cx;
@@ -240,6 +248,7 @@ function checkBoundaries() {
   pinos.forEach(drawPinos);
   drawPontuacao(pontuacao);
   drawTexto(texto);
+  drawRegras(regras);
   drawDisco(disco);
 })();
 

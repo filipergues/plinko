@@ -11,4 +11,5 @@ botaoRepor.onclick = function (e) {
   disco.y = 45;
   disco.vx = 0;
   disco.vy = 0;
+  pontuacao.pontos = 0;
 };

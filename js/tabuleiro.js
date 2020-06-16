@@ -44,6 +44,18 @@ Tabuleiro.prototype.draw = function (context) {
   if (this.lineWidth > 0) {
     context.stroke();
   }
+
+  // Desenha linha limite de lançamento
+  context.strokeStyle = "green";
+  context.beginPath();
+  context.setLineDash([5, 15]);
+  context.moveTo(this.espessura, 30);
+  context.lineTo(this.largura - this.espessura, 30);
+  context.lineTo(this.largura - this.espessura, -40);
+  context.lineTo(this.espessura, -40);
+  context.closePath();
+  context.stroke();
+
   context.restore();
 };
 

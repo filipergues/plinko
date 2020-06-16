@@ -19,6 +19,36 @@ body {
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 }
 
+#repor {
+  position: absolute;
+  width: 200px;
+  height: 60px;
+  left: 50%;
+  top: 50%;
+  margin-top: 140px;
+  margin-left: 275px;
+  padding: 10px 20px 10px 20px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.5);
+  border: thin solid rgba(0, 0, 0, 0.6);
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 3px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 3px;
+  box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 3px;
+}
+
+#repor a {
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 32px;
+}
+
+#repor a:hover {
+  color: blue;
+}
+
 #iniciar {
   position: absolute;
   width: 200px;

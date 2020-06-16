@@ -40,8 +40,8 @@ Gaveta.prototype.draw = function (context) {
 Gaveta.prototype.getBounds = function () {
   return {
     x: this.x,
-    y: this.y,
-    width: this.x + this.largura,
-    height: this.y + this.altura,
+    y: this.y - this.altura,
+    width: this.largura,
+    height: this.altura,
   };
 };

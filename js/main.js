@@ -312,12 +312,20 @@ function checkBoundaries() {
   drawTexto(texto);
   drawRegras(regras);
   drawDisco(disco);
+
+  // Atribui pontuação
+  if (disco.y > cy + altura / 2 - 50 && disco.vx === 0) {
+    gavetas.forEach(function (gaveta) {
+      if (utils.intersects(gaveta.getBounds(), disco.getBounds())) {
+        pontuacao.pontos = gaveta.ponto;
+      }
+    });
+  }
 })();
 
 canvas.addEventListener(
   "mousedown",
   function () {
-    var areaUtil = { x: cx - largura / 2, y: 0, width: largura, height: 80 };
     if (utils.containsPoint(disco.getBounds(), mouse.x, mouse.y)) {
       isMouseDown = true;
       disco.vx = disco.vy = 0;

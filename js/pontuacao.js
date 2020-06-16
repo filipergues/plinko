@@ -8,6 +8,7 @@ function Pontuacao(largura, altura, color) {
   this.altura = altura;
   this.color = utils.parseColor(color);
   this.lineWidth = 0;
+  this.pontos = 0;
 }
 
 Pontuacao.prototype.draw = function (context) {
@@ -20,7 +21,7 @@ Pontuacao.prototype.draw = function (context) {
   context.font = "30px Arial";
   context.textAlign = "center";
   context.textBaseline = "middle";
-  context.fillText("10.000 €", this.largura / 2, this.altura / 2);
+  context.fillText(this.pontos + " €", this.largura / 2, this.altura / 2);
   context.closePath();
   if (this.lineWidth > 0) {
     context.stroke();

@@ -13,11 +13,23 @@ function Texto(largura, altura, color) {
 Texto.prototype.draw = function (context) {
   context.save();
   context.translate(this.x, this.y);
-  context.fillStyle = this.color;
+  //context.fillStyle = this.color;
   context.beginPath();
   context.font = "48px Arial";
   context.textAlign = "center";
   context.textBaseline = "middle";
+
+  gradiente = context.createLinearGradient(
+    this.largura / 2 - 50,
+    this.altura / 2,
+    this.altura,
+    this.altura
+  );
+
+  gradiente.addColorStop(0.0, "red");
+  gradiente.addColorStop(1, "blue");
+  context.fillStyle = gradiente;
+
   context.fillText("PLINKO", this.largura / 2, this.altura / 2);
   context.closePath();
 
@@ -26,7 +38,6 @@ Texto.prototype.draw = function (context) {
   context.textAlign = "center";
   context.textBaseline = "middle";
   context.fillText("DESENVOLVIDO POR", this.largura / 2, this.altura / 2 + 110);
-
   context.globalAlpha = 0.6;
   context.fillText("Filipe Rodrigues", this.largura / 2, this.altura / 2 + 140);
   context.fillText(

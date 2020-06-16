@@ -19,7 +19,7 @@ Regras.prototype.draw = function (context) {
   context.font = "18px Arial";
   context.textAlign = "start";
   context.textBaseline = "middle";
-  context.fillText("PONTUAÇÃO", 0, this.altura / 2);
+  context.fillText("PONTUAÇÃO:", 0, this.altura / 2);
 
   context.font = "12px Arial";
   context.textAlign = "start";

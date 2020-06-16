@@ -16,6 +16,10 @@ Pontuacao.prototype.draw = function (context) {
   context.translate(this.x, this.y);
   context.fillStyle = this.color;
   context.beginPath();
+  context.shadowColor = "rgba(0,0,0,0.5)";
+  context.shadowOffsetX = 10;
+  context.shadowOffsetY = 10;
+  context.shadowBlur = 15;
   context.fillRect(0, 0, this.largura, this.altura);
   context.clearRect(10, 10, this.largura - 20, this.altura - 20);
   context.font = "30px Arial";

@@ -29,7 +29,7 @@ body {
   margin-left: 275px;
   padding: 10px 20px 10px 20px;
   text-align: center;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgb(44, 98, 185);
   border: thin solid rgba(0, 0, 0, 0.6);
   color: white;
   font-family: Arial, Helvetica, sans-serif;
@@ -46,7 +46,7 @@ body {
 }
 
 #repor a:hover {
-  color: blue;
+  color: yellow;
 }
 
 #iniciar {
@@ -59,7 +59,8 @@ body {
   margin-left: 275px;
   padding: 10px 20px 10px 20px;
   text-align: center;
-  background: rgba(0, 0, 0, 0.5);
+  /*background: rgba(0, 0, 0, 0.5);*/
+  background: green;
   border: thin solid rgba(0, 0, 0, 0.6);
   color: white;
   font-family: Arial, Helvetica, sans-serif;
@@ -76,5 +77,5 @@ body {
 }
 
 #iniciar a:hover {
-  color: blue;
+  color: yellow;
 }

@@ -20,9 +20,7 @@ Regras.prototype.draw = function (context) {
   context.textAlign = "start";
   context.textBaseline = "middle";
   context.fillText("PONTUAÇÃO", 0, this.altura / 2 );
-  context.closePath();
 
-  context.beginPath();
   context.font = "12px Arial";
   context.textAlign = "start";
   context.textBaseline = "middle";

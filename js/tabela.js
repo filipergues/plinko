@@ -49,10 +49,19 @@ Tabela.prototype.draw = function (context) {
 };
 
 Tabela.prototype.getBounds = function () {
-  return {
-    x: this.x,
-    y: this.y,
-    width: this.x + this.largura,
-    height: this.y + this.altura,
-  };
+  if (this.posicao === 1) {
+    return {
+      x: this.x,
+      y: this.y,
+      width: this.largura,
+      height: this.altura,
+    };
+  } else if (this.posicao === -1) {
+    return {
+      x: this.x - this.largura,
+      y: this.y,
+      width: this.largura,
+      height: this.altura,
+    };
+  }
 };

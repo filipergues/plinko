@@ -16,10 +16,10 @@ Regras.prototype.draw = function (context) {
   context.translate(this.x, this.y);
   context.fillStyle = this.color;
   context.beginPath();
-  context.font = "24px Arial";
+  context.font = "18px Arial";
   context.textAlign = "start";
   context.textBaseline = "middle";
-  context.fillText("PONTUAÇÃO", 0, this.altura / 2 );
+  context.fillText("PONTUAÇÃO", 0, this.altura / 2);
 
   context.font = "12px Arial";
   context.textAlign = "start";

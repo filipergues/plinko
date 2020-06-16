@@ -25,7 +25,7 @@ Texto.prototype.draw = function (context) {
   context.font = "14px Arial";
   context.textAlign = "center";
   context.textBaseline = "middle";
-  context.fillText("DESENVOLVEDORES", this.largura / 2, this.altura / 2 + 110);
+  context.fillText("DESENVOLVIDO POR", this.largura / 2, this.altura / 2 + 110);
 
   context.globalAlpha = 0.6;
   context.fillText("Filipe Rodrigues", this.largura / 2, this.altura / 2 + 140);
@@ -36,10 +36,14 @@ Texto.prototype.draw = function (context) {
   );
 
   context.globalAlpha = 1;
-  context.fillText("PROFESSOR", this.largura / 2, this.altura / 2 + 220);
+  context.fillText("ORIENTADOR", this.largura / 2, this.altura / 2 + 220);
 
   context.globalAlpha = 0.6;
-  context.fillText("Luis Romero", this.largura / 2, this.altura / 2 + 250);
+  context.fillText(
+    "Professor Doutor Luis Romero",
+    this.largura / 2,
+    this.altura / 2 + 250
+  );
 
   context.closePath();
   if (this.lineWidth > 0) {

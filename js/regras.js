@@ -59,6 +59,13 @@ Regras.prototype.draw = function (context) {
     0,
     this.altura / 2 + 160
   );
+
+  context.font = "13px Arial";
+  context.textAlign = "start";
+  context.textBaseline = "middle";
+  context.fillText("Junho 2020", 0, this.altura + 223);
+  context.fillText("Programação de Interfaces Visuais", 0, this.altura + 243);
+
   context.closePath();
 
   if (this.lineWidth > 0) {

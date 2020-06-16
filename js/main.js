@@ -194,7 +194,7 @@ function checkCollisionDivisorias(disco, divisoria) {
     vel.x =
       ((disco.mass - divisoria.mass) * vel.x) / (disco.mass + divisoria.mass);
     //update position
-    pos.x += vel.x;
+    pos.x += vel.x * 5;
     //rotate positions back
     var posF = rotate(pos.x, pos.y, sin, cos, false);
     //adjust positions to actual screen positions
@@ -207,11 +207,15 @@ function checkCollisionDivisorias(disco, divisoria) {
   }
 
   var divisoriaBounds = divisoria.getBounds();
-  var dx1 = divisoriaBounds.x - disco.x;
-  var dx2 = divisoriaBounds.width - disco.x;
-  if (dx1 < disco.radius && disco.y > divisoriaBounds.y) {
+  let left = divisoriaBounds.x,
+    right = divisoriaBounds.width;
+  let dx1 = Math.abs(disco.x - divisoriaBounds.x),
+    dx2 = Math.abs(disco.x - divisoriaBounds.width);
+  if (dx1 < disco.radius && disco.y + disco.radius > divisoriaBounds.y) {
+    disco.x = left - disco.radius;
     disco.vx *= bounce;
-  } else if (dx2 < disco.radius && disco.y > divisoriaBounds.y) {
+  } else if (dx2 < disco.radius && disco.y + disco.radius > divisoriaBounds.y) {
+    disco.x = right + disco.radius;
     disco.vx *= bounce;
   }
 }
@@ -285,6 +289,7 @@ function checkBoundaries() {
   if (disco.y + disco.radius > bottom) {
     disco.y = bottom - disco.radius;
     disco.vy *= bounce;
+    disco.vx = 0;
   } else if (disco.y - disco.radius < top) {
     disco.y = top + disco.radius;
     disco.vy *= bounce;

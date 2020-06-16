@@ -24,7 +24,7 @@ Gaveta.prototype.draw = function (context) {
   context.beginPath();
   context.globalAlpha = 1;
   context.fillStyle = "white";
-  context.font = "10px Arial";
+  context.font = "13px Arial";
   context.textAlign = "center";
   context.textBaseline = "middle";
   context.fillText(this.ponto, this.largura / 2, -this.altura / 2);

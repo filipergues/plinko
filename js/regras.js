@@ -1,4 +1,4 @@
-function Regras(largura, altura, color) {
+function Regras(largura, altura, color, valor_pontuacao) {
   if (color === undefined) {
     color = "blue";
   }
@@ -8,6 +8,7 @@ function Regras(largura, altura, color) {
   this.altura = altura;
   this.color = utils.parseColor(color);
   this.lineWidth = 1;
+  this.pontos = valor_pontuacao;
 }
 
 Regras.prototype.draw = function (context) {
@@ -25,14 +26,42 @@ Regras.prototype.draw = function (context) {
   context.font = "12px Arial";
   context.textAlign = "start";
   context.textBaseline = "middle";
-  context.fillText("Cada gaveta tem sua pontuação:", 0, this.altura / 2 + 25);
-  context.fillText("1 - Pontos 10 €", 0, this.altura / 2 + 60);
-  context.fillText("2 - Pontos 20 €", 0, this.altura / 2 + 80);
-  context.fillText("3 - Pontos 50 €", 0, this.altura / 2 + 100);
-  context.fillText("4 - Pontos 00 €", 0, this.altura / 2 + 120);
-  context.fillText("5 - Pontos 90 €", 0, this.altura / 2 + 140);
-  context.fillText("6 - Pontos 40 €", 0, this.altura / 2 + 160);
-  context.fillText("7 - Pontos 80 €", 0, this.altura / 2 + 180);
+  context.fillText("Nossas gavetas valem Euros:", 0, this.altura / 2 + 25);
+  context.fillText(
+    `1ª - ${this.pontos[0]} Pontos = ${this.pontos[0]} €`,
+    0,
+    this.altura / 2 + 60
+  );
+  context.fillText(
+    `2ª - ${this.pontos[1]} Pontos = ${this.pontos[1]} €`,
+    0,
+    this.altura / 2 + 80
+  );
+  context.fillText(
+    `3ª - ${this.pontos[2]} Pontos = ${this.pontos[2]} €`,
+    0,
+    this.altura / 2 + 100
+  );
+  context.fillText(
+    `4ª - ${this.pontos[3]} Pontos = ${this.pontos[3]} €`,
+    0,
+    this.altura / 2 + 120
+  );
+  context.fillText(
+    `5ª - ${this.pontos[4]} Pontos = ${this.pontos[4]} €`,
+    0,
+    this.altura / 2 + 140
+  );
+  context.fillText(
+    `6ª - ${this.pontos[5]} Pontos = ${this.pontos[5]} €`,
+    0,
+    this.altura / 2 + 160
+  );
+  context.fillText(
+    `7ª - ${this.pontos[6]} Pontos = ${this.pontos[6]} €`,
+    0,
+    this.altura / 2 + 180
+  );
   context.closePath();
 
   if (this.lineWidth > 0) {

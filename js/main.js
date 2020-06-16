@@ -1,3 +1,6 @@
+// Pontuação do jogo
+const valor_pontuacao = [100, 200, 500, 0, 900, 400, 800];
+
 var canvas = document.getElementById("canvas"),
   context = canvas.getContext("2d");
 
@@ -31,12 +34,11 @@ function drawTabuleiro(tabuleiro) {
 
 // Cria 7 gavetas de 50x50
 var gavetas = [];
-//var pontos = [100, 200, 500, 0];
 for (let g = 0; g < 7; g++) {
   var gaveta = new Gaveta(50, 50, "blue");
   gaveta.x = cx - largura / 2 + espessura + 60 * g;
   gaveta.y = cy + altura / 2 - espessura;
-  gaveta.ponto = 10 * g;
+  gaveta.ponto = valor_pontuacao[g];
   gavetas.push(gaveta);
 }
 function drawGavetas(gaveta) {
@@ -117,7 +119,7 @@ function drawTexto(texto) {
 }
 
 // Texto com regras do jogo
-var regras = new Regras(200, 200, "black");
+var regras = new Regras(200, 200, "black", valor_pontuacao);
 function drawRegras(regras) {
   regras.x = 50;
   regras.y = 150;

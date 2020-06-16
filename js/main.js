@@ -9,7 +9,7 @@ var mouse = utils.captureMouse(canvas);
 var isMouseDown = false;
 
 // Valores da gravidade e ricochete
-var gravity = 0.2;
+var gravity = 0;
 var bounce = -0.6;
 
 // Centro do canvas
@@ -49,7 +49,7 @@ function drawGavetas(gaveta) {
 var divisorias = [];
 for (var d = 0; d < 6; d++) {
   var divisoria = new Divisoria(10, 50, cor_madeira);
-  divisoria.mass = 7;
+  divisoria.mass = 8;
   divisoria.x = cx - largura / 2 + 70 + 60 * d;
   divisoria.y = cy + altura / 2 - 70;
   divisorias.push(divisoria);
@@ -83,7 +83,7 @@ var pinos = [];
 for (var i = 0; i < 7; i++) {
   for (var j = 0; j < 8; j++) {
     var pino = new Pino(5, cor_madeira);
-    pino.mass = 7;
+    pino.mass = 8;
     // Se for uma linha par, o primeiro pino
     // da linha começa na posição x = 105
     if (i % 2 == 0) pino.x = cx - largura / 2 + 105 + 60 * j;
@@ -129,7 +129,7 @@ function drawRegras(regras) {
 // Cria disco com raio 20 e cor vermelha
 var disco = new Disco(20, "red");
 disco.x = cx;
-disco.y = 50;
+disco.y = 45;
 function drawDisco(disco) {
   disco.draw(context);
 }
@@ -312,6 +312,7 @@ function checkBoundaries() {
 canvas.addEventListener(
   "mousedown",
   function () {
+    var areaUtil = { x: cx - largura / 2, y: 0, width: largura, height: 80 };
     if (utils.containsPoint(disco.getBounds(), mouse.x, mouse.y)) {
       isMouseDown = true;
       disco.vx = disco.vy = 0;
@@ -334,6 +335,6 @@ function onMouseMove(event) {
     mouse.x > tabuleiroBounds.x + disco.radius
   )
     disco.x = mouse.x;
-  if (mouse.y < tabuleiroBounds.height - disco.radius && mouse.y > disco.radius)
+  if (mouse.y < 80 - disco.radius && mouse.y > disco.radius + 10)
     disco.y = mouse.y;
 }

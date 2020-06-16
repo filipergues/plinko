@@ -49,7 +49,7 @@ function drawGavetas(gaveta) {
 var divisorias = [];
 for (var d = 0; d < 6; d++) {
   var divisoria = new Divisoria(10, 50, cor_madeira);
-  divisoria.mass = 8;
+  divisoria.mass = 3;
   divisoria.x = cx - largura / 2 + 70 + 60 * d;
   divisoria.y = cy + altura / 2 - 70;
   divisorias.push(divisoria);
@@ -83,7 +83,7 @@ var pinos = [];
 for (var i = 0; i < 7; i++) {
   for (var j = 0; j < 8; j++) {
     var pino = new Pino(5, cor_madeira);
-    pino.mass = 8;
+    pino.mass = 3;
     // Se for uma linha par, o primeiro pino
     // da linha começa na posição x = 105
     if (i % 2 == 0) pino.x = cx - largura / 2 + 105 + 60 * j;
@@ -161,7 +161,7 @@ function checkCollision(disco, pino) {
     //collision reaction
     vel.x = ((disco.mass - pino.mass) * vel.x) / (disco.mass + pino.mass);
     //update position
-    pos.x += vel.x;
+    pos.x += vel.x * 5;
     //rotate positions back
     var posF = rotate(pos.x, pos.y, sin, cos, false);
     //adjust positions to actual screen positions

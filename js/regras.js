@@ -63,7 +63,7 @@ Regras.prototype.draw = function (context) {
   context.font = "13px Arial";
   context.textAlign = "start";
   context.textBaseline = "middle";
-  context.fillText("Junho 2020", 0, this.altura + 223);
+  context.fillText("Mestrado em Engenharia Informática", 0, this.altura + 223);
   context.fillText("Programação de Interfaces Visuais", 0, this.altura + 243);
 
   context.closePath();

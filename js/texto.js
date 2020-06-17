@@ -39,9 +39,13 @@ Texto.prototype.draw = function (context) {
   context.textBaseline = "middle";
   context.fillText("DESENVOLVIDO POR", this.largura / 2, this.altura / 2 + 110);
   context.globalAlpha = 0.6;
-  context.fillText("Filipe Rodrigues", this.largura / 2, this.altura / 2 + 140);
   context.fillText(
-    "Wenderson Wanzeller",
+    "24543 – Filipe Miguel Dias Rodrigues",
+    this.largura / 2,
+    this.altura / 2 + 140
+  );
+  context.fillText(
+    "24553 – Wenderson Ferreira Wanzeller",
     this.largura / 2,
     this.altura / 2 + 160
   );

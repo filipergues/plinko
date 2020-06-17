@@ -134,6 +134,7 @@ function drawDisco(disco) {
   disco.draw(context);
 }
 
+// Roda eixos e velocidade
 function rotate(x, y, sin, cos, reverse) {
   return {
     x: reverse ? x * cos + y * sin : x * cos - y * sin,
@@ -146,29 +147,29 @@ function checkCollision(disco, pino) {
   var dx = pino.x - disco.x,
     dy = pino.y - disco.y,
     dist = Math.sqrt(dx * dx + dy * dy);
-  //collision handling code here
+  // Verifica Colisão
   if (dist < disco.radius + pino.radius) {
-    //calculate angle, sine, and cosine
+    // Calcula angulo, seno e coseno
     var angle = Math.atan2(dy, dx);
     if (angle === Math.PI / 2) angle += (Math.random() + 0.1) / 10;
 
     var sin = Math.sin(angle),
       cos = Math.cos(angle),
-      //rotate disco's position
-      pos = { x: 0, y: 0 }, //point
-      //rotate disco's velocity
+      // Posição do disco
+      pos = { x: 0, y: 0 },
+      // Roda velocidade do disco
       vel = rotate(disco.vx, disco.vy, sin, cos, true);
-    //collision reaction
+    // Reação à colisão
     vel.x = ((disco.mass - pino.mass) * vel.x) / (disco.mass + pino.mass);
-    //update position
+    // atualiza posição
     pos.x = bounce;
     pos.x += vel.x;
-    //rotate positions back
+    // Roda e repõe posição
     var posF = rotate(pos.x, pos.y, sin, cos, false);
-    //adjust positions to actual screen positions
+    // posiciona no ecrã
     disco.x = disco.x + posF.x;
     disco.y = disco.y + posF.y;
-    //rotate velocities back
+    // Roda e repõe velocidade
     var velF = rotate(vel.x, vel.y, sin, cos, false);
     disco.vx = velF.x;
     disco.vy = velF.y;
@@ -177,37 +178,39 @@ function checkCollision(disco, pino) {
 
 // Colisão com divisórias
 function checkCollisionDivisorias(disco, divisoria) {
+  // Testa colisão no topo arredondado da divisória
   var dx = divisoria.x + divisoria.largura / 2 - disco.x,
     dy = divisoria.y - disco.y,
     dist = Math.sqrt(dx * dx + dy * dy);
   //collision handling code here
   if (dist < disco.radius + divisoria.largura / 2) {
-    //calculate angle, sine, and cosine
+    // // Calcula angulo, seno e coseno
     var angle = Math.atan2(dy, dx);
     if (angle === Math.PI / 2) angle += (Math.random() + 0.1) / 10;
     var sin = Math.sin(angle),
       cos = Math.cos(angle),
-      //rotate disco's position
+      // Posição do disco
       pos = { x: 0, y: 0 }, //point
-      //rotate disco's velocity
+      // Roda velocidade do disco
       vel = rotate(disco.vx, disco.vy, sin, cos, true);
-    //collision reaction
+    // Reação à colisão
     vel.x =
       ((disco.mass - divisoria.mass) * vel.x) / (disco.mass + divisoria.mass);
-    //update position
+    // Actualiza posição
     pos.x = bounce;
     pos.x += vel.x;
-    //rotate positions back
+    // Roda e repõe posição
     var posF = rotate(pos.x, pos.y, sin, cos, false);
-    //adjust positions to actual screen positions
+    // Posiciona no ecra
     disco.x = disco.x + posF.x;
     disco.y = disco.y + posF.y;
-    //rotate velocities back
+    // Roda e repõe velocidade
     var velF = rotate(vel.x, vel.y, sin, cos, false);
     disco.vx = velF.x;
     disco.vy = velF.y;
   }
 
+  // Testa colisão nas paredes verticais laterais da divisória
   var divisoriaBounds = divisoria.getBounds();
   let left = divisoriaBounds.x,
     right = divisoriaBounds.width;
@@ -225,6 +228,7 @@ function checkCollisionDivisorias(disco, divisoria) {
 // Colisão com tabelas
 function checkCollisionTabelas(disco, tabela) {
   var limites = [];
+  // Tabelas do lado esquerdo
   if (tabela.posicao === 1) {
     limites[0] = {
       x: tabela.x,
@@ -236,7 +240,9 @@ function checkCollisionTabelas(disco, tabela) {
       y: tabela.y + tabela.altura / 2,
       rotation: Math.atan2(tabela.altura / 2, -tabela.largura),
     };
-  } else if (tabela.posicao === -1) {
+  }
+  // Tabelas do lado direito (posição inversa)
+  else if (tabela.posicao === -1) {
     limites[0] = {
       x: tabela.x,
       y: tabela.y,
@@ -251,29 +257,29 @@ function checkCollisionTabelas(disco, tabela) {
 
   function checkLimites(limite) {
     if (utils.intersects(disco.getBounds(), tabela.getBounds())) {
-      // get seno e coseno
+      // // Calcula seno e coseno
       var cos = Math.cos(limite.rotation);
       var sin = Math.sin(limite.rotation);
-      // get position of disco, relative to tabela
+      // posição do disco em relação à tabela
       var x1 = disco.x - limite.x;
       var y1 = disco.y - limite.y;
-      // rotate coordinates
+      // roda coordenadas
       var y2 = cos * y1 - sin * x1;
 
-      // rotate velocity
+      // roda velocidade
       var vy1 = cos * disco.vy - sin * disco.vx;
 
-      // perform bounce with rotated values
+      // Ricochete
       if (y2 > -disco.radius && y2 < vy1) {
-        // rotate coordinates
+        // roda coordenadas
         var x2 = cos * x1 + sin * y1;
 
-        // rotate velocity
+        // roda velocidade
         var vx1 = cos * disco.vx + sin * disco.vy;
         y2 = -disco.radius;
         vy1 *= bounce;
 
-        // rotate everything back
+        // roda tudo de volta
         x1 = cos * x2 - sin * y2;
         y1 = cos * y2 + sin * x2;
         disco.vx = cos * vx1 - sin * vy1;
@@ -283,7 +289,6 @@ function checkCollisionTabelas(disco, tabela) {
       }
     }
   }
-  // limites.forEach(checkLimites);
   if (disco.y < tabela.y + tabela.altura / 2) {
     checkLimites(limites[0]);
   } else if (disco.y > tabela.y + tabela.altura / 2) {
@@ -301,7 +306,6 @@ function checkBoundaries() {
   disco.vy += gravity;
   disco.x += disco.vx;
   disco.y += disco.vy;
-  //boundary detect and bounce
   if (disco.x + disco.radius > right) {
     disco.x = right - disco.radius;
     disco.vx *= bounce;
@@ -349,11 +353,14 @@ function checkBoundaries() {
 canvas.addEventListener(
   "mousedown",
   function () {
-    if (utils.containsPoint(disco.getBounds(), mouse.x, mouse.y)) {
-      isMouseDown = true;
-      disco.vx = disco.vy = 0;
-      canvas.addEventListener("mouseup", onMouseUp, false);
-      canvas.addEventListener("mousemove", onMouseMove, false);
+    // Rato apenas pega no disco se estiver na area permitida (verde)
+    if (mouse.y + disco.radius < 80) {
+      if (utils.containsPoint(disco.getBounds(), mouse.x, mouse.y)) {
+        isMouseDown = true;
+        disco.vx = disco.vy = 0;
+        canvas.addEventListener("mouseup", onMouseUp, false);
+        canvas.addEventListener("mousemove", onMouseMove, false);
+      }
     }
   },
   false
@@ -366,11 +373,13 @@ function onMouseUp() {
 }
 
 function onMouseMove(event) {
+  // Define area permitida para mexer o disco com o rato
+  // Area aparece a linha tracejada a verde
   if (
     mouse.x < tabuleiroBounds.width - disco.radius &&
     mouse.x > tabuleiroBounds.x + disco.radius
   )
     disco.x = mouse.x;
-  if (mouse.y < 80 - disco.radius && mouse.y > disco.radius + 10)
+  if (mouse.y + disco.radius < 80 && mouse.y - disco.radius > 10)
     disco.y = mouse.y;
 }

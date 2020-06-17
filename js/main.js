@@ -222,21 +222,39 @@ function checkCollisionDivisorias(disco, divisoria) {
 
 // Colisão com tabelas
 function checkCollisionTabelas(disco, tabela) {
-  if (utils.intersects(disco.getBounds(), tabela.getBounds())) {
-    // Linha superior
-    if (disco.y < tabela.y + tabela.altura / 2) {
-      // get angulo
-      var dx = tabela.largura;
-      var dy = tabela.altura / 2;
-      var angle = Math.atan2(dy, dx);
-      if (tabela.posicao === -1) angle = -angle;
+  var limites = [];
+  if (tabela.posicao === 1) {
+    limites[0] = {
+      x: tabela.x,
+      y: tabela.y,
+      rotation: Math.atan2(tabela.altura / 2, tabela.largura),
+    };
+    limites[1] = {
+      x: tabela.x + tabela.largura,
+      y: tabela.y + tabela.altura / 2,
+      rotation: Math.atan2(tabela.altura / 2, -tabela.largura),
+    };
+  } else if (tabela.posicao === -1) {
+    limites[0] = {
+      x: tabela.x,
+      y: tabela.y,
+      rotation: -Math.atan2(tabela.altura / 2, tabela.largura),
+    };
+    limites[1] = {
+      x: tabela.x - tabela.largura,
+      y: tabela.y + tabela.altura / 2,
+      rotation: -Math.atan2(tabela.altura / 2, -tabela.largura),
+    };
+  }
 
+  function checkLimites(limite) {
+    if (utils.intersects(disco.getBounds(), tabela.getBounds())) {
       // get seno e coseno
-      var cos = Math.cos(angle);
-      var sin = Math.sin(angle);
+      var cos = Math.cos(limite.rotation);
+      var sin = Math.sin(limite.rotation);
       // get position of disco, relative to tabela
-      var x1 = disco.x - tabela.x;
-      var y1 = disco.y - tabela.y;
+      var x1 = disco.x - limite.x;
+      var y1 = disco.y - limite.y;
       // rotate coordinates
       var y2 = cos * y1 - sin * x1;
 
@@ -258,10 +276,16 @@ function checkCollisionTabelas(disco, tabela) {
         y1 = cos * y2 + sin * x2;
         disco.vx = cos * vx1 - sin * vy1;
         disco.vy = cos * vy1 + sin * vx1;
-        disco.x = tabela.x + x1;
-        disco.y = tabela.y + y1;
+        disco.x = limite.x + x1;
+        disco.y = limite.y + y1;
       }
     }
+  }
+  // limites.forEach(checkLimites);
+  if (disco.y < tabela.y + tabela.altura / 2) {
+    checkLimites(limites[0]);
+  } else if (disco.y > tabela.y + tabela.altura / 2) {
+    checkLimites(limites[1]);
   }
 }
 

@@ -211,10 +211,10 @@ function checkCollisionDivisorias(disco, divisoria) {
     right = divisoriaBounds.width;
   let dx1 = Math.abs(disco.x - divisoriaBounds.x),
     dx2 = Math.abs(disco.x - divisoriaBounds.width);
-  if (dx1 < disco.radius && disco.y + disco.radius > divisoriaBounds.y) {
+  if (dx1 < disco.radius && disco.y > divisoriaBounds.y) {
     disco.x = left - disco.radius;
     disco.vx *= bounce;
-  } else if (dx2 < disco.radius && disco.y + disco.radius > divisoriaBounds.y) {
+  } else if (dx2 < disco.radius && disco.y > divisoriaBounds.y) {
     disco.x = right + disco.radius;
     disco.vx *= bounce;
   }
@@ -222,48 +222,45 @@ function checkCollisionDivisorias(disco, divisoria) {
 
 // Colisão com tabelas
 function checkCollisionTabelas(disco, tabela) {
-  let tabelaBounds = tabela.getBounds();
-  var dx = tabela.largura,
-    dy = tabela.altura / 2;
-  if (
-    (disco.x - disco.radius > tabelaBounds.x &&
-      disco.x - disco.radius < tabelaBounds.width) ||
-    (disco.x + disco.radius > tabelaBounds.x - 30 &&
-      disco.x + disco.radius < tabelaBounds.width)
-  ) {
-    // //get angle, sine, and cosine
-    var angle = Math.atan2(dy, dx);
-    if (tabela.posicao === -1) {
-      angle = -angle;
-    }
-    var cos = Math.cos(angle),
-      sin = Math.sin(angle),
-      //get position of disco, relative to tabela
-      x1 = disco.x - tabela.x,
-      y1 = disco.y - tabela.y,
-      //rotate coordinates
-      y2 = cos * y1 - sin * x1,
-      //rotate velocity
-      vy1 = cos * disco.vy - sin * disco.vx;
-    //perform bounce with rotated values
-    if (y2 > -disco.radius && y2 < vy1) {
-      //rotate coordinates
-      var x2 = cos * x1 + sin * y1,
-        //rotate velocity
-        vx1 = cos * disco.vx + sin * disco.vy;
-      if (disco.y > tabela.y + tabela.altura / 2) {
-        x2 += Math.PI;
-        vx1 += Math.PI;
+  if (utils.intersects(disco.getBounds(), tabela.getBounds())) {
+    // Linha superior
+    if (disco.y < tabela.y + tabela.altura / 2) {
+      // get angulo
+      var dx = tabela.largura;
+      var dy = tabela.altura / 2;
+      var angle = Math.atan2(dy, dx);
+      if (tabela.posicao === -1) angle = -angle;
+
+      // get seno e coseno
+      var cos = Math.cos(angle);
+      var sin = Math.sin(angle);
+      // get position of disco, relative to tabela
+      var x1 = disco.x - tabela.x;
+      var y1 = disco.y - tabela.y;
+      // rotate coordinates
+      var y2 = cos * y1 - sin * x1;
+
+      // rotate velocity
+      var vy1 = cos * disco.vy - sin * disco.vx;
+
+      // perform bounce with rotated values
+      if (y2 > -disco.radius && y2 < vy1) {
+        // rotate coordinates
+        var x2 = cos * x1 + sin * y1;
+
+        // rotate velocity
+        var vx1 = cos * disco.vx + sin * disco.vy;
+        y2 = -disco.radius;
+        vy1 *= bounce;
+
+        // rotate everything back
+        x1 = cos * x2 - sin * y2;
+        y1 = cos * y2 + sin * x2;
+        disco.vx = cos * vx1 - sin * vy1;
+        disco.vy = cos * vy1 + sin * vx1;
+        disco.x = tabela.x + x1;
+        disco.y = tabela.y + y1;
       }
-      y2 = -disco.radius;
-      vy1 *= bounce;
-      //rotate everything back
-      x1 = cos * x2 - sin * y2;
-      y1 = cos * y2 + sin * x2;
-      disco.vx = cos * vx1 - sin * vy1;
-      disco.vy = cos * vy1 + sin * vx1;
-      disco.x = tabela.x + x1;
-      disco.y = tabela.y + y1;
     }
   }
 }

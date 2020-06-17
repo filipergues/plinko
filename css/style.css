@@ -29,24 +29,32 @@ body {
   margin-left: 275px;
   padding: 10px 20px 10px 20px;
   text-align: center;
-  background: rgb(44, 98, 185);
-  border: thin solid rgba(0, 0, 0, 0.6);
-  color: white;
   font-family: Arial, Helvetica, sans-serif;
+
+  font-size: 24px;
+  text-align: center;
   cursor: pointer;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 3px;
-  -moz-box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 3px;
-  box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 3px;
+  outline: none;
+  color: #fff;
+  background-color: #4c9baf;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+#repor:hover {
+  background-color: #428ea1;
+}
+
+#repor:active {
+  background-color: #428ea1;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }
 
 #repor a {
   text-decoration: none;
   color: #ffffff;
   font-size: 32px;
-}
-
-#repor a:hover {
-  color: yellow;
 }
 
 #iniciar {
@@ -59,23 +67,31 @@ body {
   margin-left: 275px;
   padding: 10px 20px 10px 20px;
   text-align: center;
-  /*background: rgba(0, 0, 0, 0.5);*/
-  background: green;
-  border: thin solid rgba(0, 0, 0, 0.6);
-  color: white;
   font-family: Arial, Helvetica, sans-serif;
+
+  font-size: 24px;
+  text-align: center;
   cursor: pointer;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 3px;
-  -moz-box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 3px;
-  box-shadow: rgba(0, 0, 0, 0.3) 3px 3px 3px;
+  outline: none;
+  color: #fff;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+#iniciar:hover {
+  background-color: #3e8e41;
+}
+
+#iniciar:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }
 
 #iniciar a {
   text-decoration: none;
   color: #ffffff;
   font-size: 32px;
-}
-
-#iniciar a:hover {
-  color: yellow;
 }

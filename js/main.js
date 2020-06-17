@@ -150,7 +150,7 @@ function checkCollision(disco, pino) {
   if (dist < disco.radius + pino.radius) {
     //calculate angle, sine, and cosine
     var angle = Math.atan2(dy, dx);
-    if (angle === Math.PI / 2) angle += (Math.random() + 0.01) / 10;
+    if (angle === Math.PI / 2) angle += (Math.random() + 0.1) / 10;
 
     var sin = Math.sin(angle),
       cos = Math.cos(angle),
@@ -161,7 +161,8 @@ function checkCollision(disco, pino) {
     //collision reaction
     vel.x = ((disco.mass - pino.mass) * vel.x) / (disco.mass + pino.mass);
     //update position
-    pos.x += vel.x * 5;
+    pos.x = bounce;
+    pos.x += vel.x;
     //rotate positions back
     var posF = rotate(pos.x, pos.y, sin, cos, false);
     //adjust positions to actual screen positions
@@ -183,7 +184,7 @@ function checkCollisionDivisorias(disco, divisoria) {
   if (dist < disco.radius + divisoria.largura / 2) {
     //calculate angle, sine, and cosine
     var angle = Math.atan2(dy, dx);
-    if (angle === Math.PI / 2) angle += (Math.random() + 0.01) / 10;
+    if (angle === Math.PI / 2) angle += (Math.random() + 0.1) / 10;
     var sin = Math.sin(angle),
       cos = Math.cos(angle),
       //rotate disco's position
@@ -194,7 +195,8 @@ function checkCollisionDivisorias(disco, divisoria) {
     vel.x =
       ((disco.mass - divisoria.mass) * vel.x) / (disco.mass + divisoria.mass);
     //update position
-    pos.x += vel.x * 5;
+    pos.x = bounce;
+    pos.x += vel.x;
     //rotate positions back
     var posF = rotate(pos.x, pos.y, sin, cos, false);
     //adjust positions to actual screen positions

@@ -28,7 +28,7 @@ Disco.prototype.draw = function (context) {
   context.closePath();
   context.shadowColor = "rgba(0,0,0,0.3)";
   context.shadowOffsetX = 3;
-  context.shadowOffsetY = 3;
+  context.shadowOffsetY = 2;
   context.shadowBlur = 3;
   context.fill();
   if (this.lineWidth > 0) {

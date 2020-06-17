@@ -23,6 +23,10 @@ Divisoria.prototype.draw = function (context) {
   context.lineTo(this.largura, 0);
   context.arc(this.largura / 2, 0, this.largura / 2, 0, Math.PI, true);
   context.closePath();
+  context.shadowColor = "rgba(0,0,0,0.3)";
+  context.shadowOffsetX = 3;
+  context.shadowOffsetY = 0;
+  context.shadowBlur = 3;
   context.fill();
   if (this.lineWidth > 0) {
     context.stroke();

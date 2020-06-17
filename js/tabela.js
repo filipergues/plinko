@@ -41,6 +41,11 @@ Tabela.prototype.draw = function (context) {
   context.lineWidth = this.lineWidth;
   context.fillStyle = this.color;
   this.criaPath(context);
+  context.shadowColor = "rgba(0,0,0,0.3)";
+  if (this.posicao === 1) context.shadowOffsetX = 3;
+  else context.shadowOffsetX = -3;
+  context.shadowOffsetY = 3;
+  context.shadowBlur = 3;
   context.fill();
   if (this.lineWidth > 0) {
     context.stroke();

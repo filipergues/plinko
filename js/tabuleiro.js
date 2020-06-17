@@ -32,18 +32,28 @@ Tabuleiro.prototype.draw = function (context) {
   context.globalAlpha = 1;
   context.beginPath();
   context.rect(0, 0, this.espessura, this.altura);
+  context.closePath();
+  context.fill();
+  context.stroke();
+  context.beginPath();
   context.rect(
     this.espessura,
     this.altura - this.espessura,
     this.largura - this.espessura * 2,
     this.espessura
   );
+  context.closePath();
+  context.shadowColor = "rgba(0,0,0,0.3)";
+  context.shadowOffsetX = 3;
+  context.shadowOffsetY = 3;
+  context.shadowBlur = 3;
+  context.fill();
+  context.stroke();
+  context.beginPath();
   context.rect(this.largura - this.espessura, 0, this.espessura, this.altura);
   context.closePath();
   context.fill();
-  if (this.lineWidth > 0) {
-    context.stroke();
-  }
+  context.stroke();
 
   // Desenha linha limite de lançamento
   context.strokeStyle = "green";

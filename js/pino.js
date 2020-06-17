@@ -26,6 +26,10 @@ Pino.prototype.draw = function (context) {
   // x, y, radius, start_angle, end_angle, anti-clockwise
   context.arc(0, 0, this.radius, 0, Math.PI * 2, true);
   context.closePath();
+  context.shadowColor = "rgba(0,0,0,0.3)";
+  context.shadowOffsetX = 3;
+  context.shadowOffsetY = 3;
+  context.shadowBlur = 3;
   context.fill();
   if (this.lineWidth > 0) {
     context.stroke();
